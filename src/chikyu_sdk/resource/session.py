@@ -3,7 +3,7 @@
 from chikyu_sdk.api_resource import ApiObject
 from boto3 import client as boto3_client
 
-from chikyu_sdk.config import configs
+from chikyu_sdk.config.config import Config
 from chikyu_sdk.open_resource import OpenResource
 from chikyu_sdk.secure_resource import SecureResource
 
@@ -57,8 +57,8 @@ class Session(ApiObject):
         })
 
         res = boto3_client("sts").assume_role_with_web_identity(
-            RoleArn=configs.AWS_ROLE_ARN,
-            RoleSessionName=configs.AWS_API_GW_SERVICE_NAME,
+            RoleArn=Config.aws_role_arn(),
+            RoleSessionName=Config.aws_api_gw_service_name(),
             WebIdentityToken=login_result['cognito_token']
         )
 

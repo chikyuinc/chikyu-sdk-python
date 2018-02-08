@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 import os.path
+from chikyu_sdk.config.config import Config
 from ConfigParser import SafeConfigParser
 
 from logging import basicConfig
@@ -8,7 +9,7 @@ basicConfig()
 
 
 def get_test_config():
-    config_path = "{}/config.ini".format(os.path.dirname(__file__))
+    config_path = "{}/config.{}.ini".format(os.path.dirname(__file__), Config.mode())
     if os.path.exists(config_path):
         conf = SafeConfigParser()
         conf.read(config_path)

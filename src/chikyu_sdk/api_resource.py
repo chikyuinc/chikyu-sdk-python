@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from chikyu_sdk.config import configs
+from chikyu_sdk.config.config import Config
 from chikyu_sdk.error.common_errors import HttpException, ApiExecuteException
 from logging import getLogger
 
@@ -10,7 +10,7 @@ class ApiResource(object):
     @classmethod
     def _build_url(cls, api_class, api_path, with_host=True):
         if with_host:
-            url = "{}://{}".format(configs.PROTOCOL, configs.HOST)
+            url = "{}://{}".format(Config.protocol(), Config.host())
         else:
             url = ""
 
@@ -19,7 +19,7 @@ class ApiResource(object):
         else:
             p = api_path
 
-        url = "{}/{}/api/v2/{}/{}".format(url, configs.ENV_NAME, api_class, p)
+        url = "{}/{}/api/v2/{}/{}".format(url, Config.env_name(), api_class, p)
         cls._logger.debug(url)
         return url
 
