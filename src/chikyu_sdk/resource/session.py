@@ -49,11 +49,12 @@ class Session(ApiObject):
         self.__identity_id = identity_id
 
     @classmethod
-    def login(cls, token_name, login_token, login_secret_token):
+    def login(cls, token_name, login_token, login_secret_token, duration=86400):
         login_result = OpenResource.invoke('/session/login', {
             'token_name': token_name,
             'login_token': login_token,
-            'login_secret_token': login_secret_token
+            'login_secret_token': login_secret_token,
+            'duration': duration
         })
 
         res = boto3_client("sts").assume_role_with_web_identity(
