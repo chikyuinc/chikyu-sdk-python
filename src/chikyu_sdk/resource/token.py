@@ -6,9 +6,9 @@ from chikyu_sdk.secure_resource import SecureResource
 
 class Token(ApiObject):
     @classmethod
-    def create(cls, token_name, email, password):
+    def create(cls, token_name, email, password, duration=86400):
         res = OpenResource.invoke('/session/token/create',
-                            {'token_name': token_name, 'email': email, 'password': password})
+                            {'token_name': token_name, 'email': email, 'password': password, 'duration': duration})
         res['token_name'] = token_name
         return res
 
