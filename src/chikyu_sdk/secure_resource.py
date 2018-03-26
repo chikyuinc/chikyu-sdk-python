@@ -4,7 +4,7 @@ import requests
 from requests_aws4auth import AWS4Auth
 
 from chikyu_sdk.api_resource import ApiResource
-from chikyu_sdk.config.config import Config
+from chikyu_sdk.config.api_config import ApiConfig
 
 
 class SecureResource(ApiResource):
@@ -17,8 +17,8 @@ class SecureResource(ApiResource):
 
         self.__auth = AWS4Auth(self.__session.credentials.key_id,
                                self.__session.credentials.secret_key,
-                               Config.aws_region(),
-                               Config.aws_api_gw_service_name(),
+                               ApiConfig.aws_region(),
+                               ApiConfig.aws_api_gw_service_name(),
                                session_token=self.__session.credentials.session_token)
 
     def invoke(self, path, data):
@@ -31,7 +31,7 @@ class SecureResource(ApiResource):
         url = self._build_url("secure", path)
         params = {'session_id': self.__session.session_id, 'data': data}
 
-        if Config.mode() == "local":
+        if ApiConfig.mode() == "local":
             params['identity_id'] = self.__session.identity_id
 
         res = requests.post(

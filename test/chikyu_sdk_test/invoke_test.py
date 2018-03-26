@@ -10,7 +10,7 @@ config = test_config.configs
 
 
 def test_token():
-    token_name = 'test_python_token'
+    token_name = 'test_python_token_tmp'
     token = Token.create(
         token_name,
         config.get('login', 'email'),
@@ -18,8 +18,9 @@ def test_token():
         86400 * 30 * 12 * 10)
 
     token = Token.renew(token['token_name'], token['login_token'], token['login_secret_token'])
+    print(token)
 
-    session = _get_session()
+    session = _get_session(token)
     items = Token.list(session)
 
     print(items)
@@ -32,6 +33,16 @@ def test_token():
     session.logout()
 
 
+def test_create_token():
+    token = Token.create(
+        config.get('token', 'token_name'),
+        config.get('login', 'email'),
+        config.get('login', 'password'),
+        86400 * 30 * 12 * 10)
+
+    print(token)
+
+
 def test_secure():
     session = _get_session()
 
@@ -40,6 +51,15 @@ def test_secure():
 
     res = r.invoke('entity/prospects/list',
              {'items_per_page': 10, 'page_index': 0})
+    print(res)
+
+    st = str(session)
+    print(st)
+    session = Session.from_json(st)
+
+    r2 = SecureResource(session)
+    res = r2.invoke('entity/prospects/list',
+             {'items_per_page': 10, 'page_index': 1})
 
     print(res)
     session.logout()
@@ -79,7 +99,10 @@ def test_data_import():
     print(res)
 
 
-def _get_session():
-    return Session.login(config.get('token', 'token_name'),
-                         config.get('token', 'login_token'),
-                         config.get('token', 'login_secret_token'))
+def _get_session(token=None):
+    if token:
+        return Session.login(token['token_name'], token['login_token'], token['login_secret_token'])
+    else:
+        return Session.login(config.get('token', 'token_name'),
+                             config.get('token', 'login_token'),
+                             config.get('token', 'login_secret_token'))
