@@ -31,7 +31,7 @@ class SecureResource(ApiResource):
         url = self._build_url("secure", path)
         params = {'session_id': self.__session.session_id, 'data': data}
 
-        if ApiConfig.mode() == "local":
+        if ApiConfig.mode() == "local" or ApiConfig.mode() == "docker":
             params['identity_id'] = self.__session.identity_id
 
         res = requests.post(
