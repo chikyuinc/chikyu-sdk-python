@@ -40,7 +40,10 @@ class ApiConfig(object):
 
     @classmethod
     def aws_role_arn(cls):
-        return 'arn:aws:iam::171608821407:role/Cognito_Chikyu_Normal_Id_PoolAuth_Role'
+        if cls.__mode == 'docker' or cls.__mode == 'local':
+            return 'arn:aws:iam::527083274078:role/Cognito_ChikyuDevLocalAuth_Role'
+        else:
+            return 'arn:aws:iam::171608821407:role/Cognito_Chikyu_Normal_Id_PoolAuth_Role'
 
     @classmethod
     def aws_api_gw_service_name(cls):
