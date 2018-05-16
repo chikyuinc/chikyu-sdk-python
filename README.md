@@ -1,4 +1,4 @@
-# chikyu-python-sdk
+# chikyu-sdk-python
 ## 概要
 **内容は全てリリース前のものであり、予告なく変更となる場合があります**
 
@@ -38,7 +38,7 @@ print(invoker.invoke('/entity/companies/list',  {'items_per_page': 10, 'page_ind
 
 ## 詳細
 ### class1(APIキーのみで呼び出し可能)
-#### APIトークンを生成する
+#### APIキーを生成する
 ```token.py
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.resource.session import Session
@@ -47,7 +47,7 @@ from chikyu_sdk.secure_resource import SecureResource
 # 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
 ApiConfig.set_mode('devdc')
 
-# 下記のclass2 apiを利用し、予めトークンを生成しておく。
+# 後述のclass2 apiを利用し、予めログイン用の「認証トークン」(＊ここで言う「APIキー」とは別)を生成しておく。
 session = Session.login('token_name', 'login_token', 'login_secret_token')
 invoker = SecureResource(session)
 
@@ -71,6 +71,7 @@ from chikyu_sdk.public_resource import PublicResource
 # 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
 ApiConfig.set_mode('devdc')
 
+# APIキーを指定してインスタンスを生成
 invoker = PublicResource('api_key', 'auth_key')
 
 # 第一引数=APIのパスを指定(詳細については、ページ最下部のリンクを参照)
@@ -82,8 +83,8 @@ res = invoker.invoke('/entity/prospects/list', {'items_per_page': 10, 'page_inde
 print(res)
 ```
 
-### class2(APIトークンからセッションを生成)
-#### APIトークンを生成する
+### class2(認証トークンからセッションを生成)
+#### 認証トークンを生成する
 ```create_token.py
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.resource.token import Token
