@@ -76,7 +76,8 @@ class Session(ApiObject):
         res = boto3_client("sts").assume_role_with_web_identity(
             RoleArn=ApiConfig.aws_role_arn(),
             RoleSessionName=ApiConfig.aws_api_gw_service_name(),
-            WebIdentityToken=login_result['cognito_token']
+            WebIdentityToken=login_result['cognito_token'],
+            DurationSeconds=43200
         )
 
         return Session(
