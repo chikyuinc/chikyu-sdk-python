@@ -11,7 +11,7 @@ class ApiConfig(object):
         'dev01': 'gateway.chikyu.mobi',
         'dev02': 'gateway.chikyu.mobi',
         'hotfix01': 'gateway.chikyu.mobi',
-        'prod': 'api.chikyu.net'
+        'prod': 'endpoint.chikyu.net'
     }
 
     __PROTOCOLS = {
@@ -42,8 +42,7 @@ class ApiConfig(object):
     def aws_role_arn(cls):
         if cls.__mode == 'prod':
             return 'arn:aws:iam::171608821407:role/Cognito_chikyu_PROD_idpoolAuth_Role'
-
-        if cls.__mode == 'docker' or cls.__mode == 'local':
+        elif cls.__mode == 'docker' or cls.__mode == 'local':
             return 'arn:aws:iam::527083274078:role/Cognito_ChikyuDevLocalAuth_Role'
         else:
             return 'arn:aws:iam::171608821407:role/Cognito_Chikyu_Normal_Id_PoolAuth_Role'
@@ -66,6 +65,8 @@ class ApiConfig(object):
 
     @classmethod
     def mode(cls):
+        if not cls.__mode:
+            cls.__mode = 'prod'
         return cls.__mode
 
     @classmethod
