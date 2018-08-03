@@ -1,7 +1,5 @@
 # chikyu-sdk-python
 ## 概要
-**内容は全てリリース前のものであり、予告なく変更となる場合があります**
-
 ちきゅうのWeb APIをPythonから利用するためのライブラリです。
 
 SDKの開発にはPython2.7.11を利用しています。
@@ -25,9 +23,6 @@ from chikyu_sdk.resource.session import Session
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.secure_resource import SecureResource
 
-# 2018/05/14現在、まだ本番環境が未構築であるため、こちらのテスト用の環境名を指定して下さい。
-ApiConfig.set_mode('devdc')
-
 # セッションの生成
 session = Session.login('token_name',  'login_token',  'login_secret_token')
 
@@ -43,9 +38,6 @@ print(invoker.invoke('/entity/companies/list',  {'items_per_page': 10, 'page_ind
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.resource.session import Session
 from chikyu_sdk.secure_resource import SecureResource
-
-# 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
-ApiConfig.set_mode('devdc')
 
 # 後述のclass2 apiを利用し、予めログイン用の「認証トークン」(＊ここで言う「APIキー」とは別)を生成しておく。
 session = Session.login('token_name', 'login_token', 'login_secret_token')
@@ -68,9 +60,6 @@ print(key)
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.public_resource import PublicResource
 
-# 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
-ApiConfig.set_mode('devdc')
-
 # APIキーを指定してインスタンスを生成
 invoker = PublicResource('api_key', 'auth_key')
 
@@ -89,9 +78,6 @@ print(res)
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.resource.token import Token
 
-# 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
-ApiConfig.set_mode('devdc')
-
 # ・トークン名称(任意)
 # ・ちきゅうのログイン用メールアドレス
 # ・ちきゅうのログイン用パスワード
@@ -107,11 +93,7 @@ print(token)
 from chikyu_sdk.resource.session import Session
 from chikyu_sdk.config.api_config import ApiConfig
 
-# 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
-ApiConfig.set_mode('devdc')
-
 # 上で生成したトークン情報を保存しておき、展開する
-
 # セッションを生成する
 session = Session.login('token_name',  'login_token',  'login_secret_token')
 
@@ -137,9 +119,6 @@ session.logout()
 from chikyu_sdk.resource.session import Session
 from chikyu_sdk.secure_resource import SecureResource
 from chikyu_sdk.config.api_config import ApiConfig
-
-# 2018/05/15現在、まだ本番環境が存在しないため、接続先の指定が必要。
-ApiConfig.set_mode('devdc')
 
 # 上で生成したセッション情報を元に、API呼び出し用のリソースを生成する
 invoker = SecureResource(session)
