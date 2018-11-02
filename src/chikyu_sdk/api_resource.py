@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+import six
 from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.error.common_errors import HttpException, ApiExecuteException
 from logging import getLogger
+
+from chikyu_sdk.helper.json_helper import to_str, to_unicode_all
 
 
 class ApiResource(object):
@@ -39,21 +42,30 @@ class ApiResource(object):
             except:
                 err_msg = resp.content
 
-            msg = u"httpエラーが発生しました -> url={} / status={} / message={}".format(path, resp.status_code, err_msg)
+            if six.PY2:
+                msg = u"httpエラーが発生しました -> url={} / status={} / message={}".format(
+                    to_str(path), to_str(resp.status_code), to_str(err_msg))
+            else:
+                msg = \
+                    u"httpエラーが発生しました -> url={} / status={} / message={}".format(path, resp.status_code, err_msg)
             cls._logger.error(msg)
             raise HttpException(msg)
 
         content = resp.json()
         if content['has_error']:
             if 'message' in content:
-                msg = u"APIの実行に失敗しました -> url={} / message={}".format(path, content['message'])
+                if six.PY2:
+                    msg = \
+                        u"APIの実行に失敗しました -> url={} / message={}".format(to_str(path), to_str(content['message']))
+                else:
+                    msg = "APIの実行に失敗しました -> url={} / message={}".format(path, content['message'])
             else:
-                msg = u"APIの実行に失敗しました"
+                msg = "APIの実行に失敗しました"
             cls._logger.error(msg)
             raise ApiExecuteException(msg)
 
         if 'data' in content:
-            return content['data']
+            return to_unicode_all(content['data'])
 
 
 class ApiObject(object):
