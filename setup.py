@@ -46,7 +46,13 @@ setup(
     keywords='http sdk chikyu crm sfa',
 
     package_dir={'': 'src'},
-    packages=['chikyu_sdk', 'chikyu_sdk.config', 'chikyu_sdk.error', 'chikyu_sdk.resource'],  # Required
+
+    # Required
+    packages=['chikyu_sdk',
+              'chikyu_sdk.config',
+              'chikyu_sdk.error',
+              'chikyu_sdk.resource',
+              'chikyu_sdk.helper'],
 
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['requests', 'requests-aws4auth', 'boto3'],  # Optional
