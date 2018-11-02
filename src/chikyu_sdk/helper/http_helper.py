@@ -23,7 +23,7 @@ def get(url, payload=None, headers=None):
     if res.status_code == 200:
         return res.content
     else:
-        __logger.error('リクエスト送信エラー:{} / {}'.format(url, payload))
+        __logger.error('request send error:{} / {}'.format(url, payload))
         return None
 
 
