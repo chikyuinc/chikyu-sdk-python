@@ -10,6 +10,7 @@ class ApiConfig(object):
         'devdc': 'gateway.chikyu.mobi',
         'dev01': 'gateway.chikyu.mobi',
         'dev02': 'gateway.chikyu.mobi',
+        'dev03': 'gateway-dev.chikyu.mobi',
         'hotfix01': 'gateway.chikyu.mobi',
         'prod': 'endpoint.chikyu.net'
     }
@@ -20,6 +21,7 @@ class ApiConfig(object):
         'devdc': 'https',
         'dev01': 'https',
         'dev02': 'https',
+        'dev03': 'https',
         'hotfix01': 'https',
         'prod': 'https'
     }
@@ -30,6 +32,7 @@ class ApiConfig(object):
         'devdc': 'dev',
         'dev01': 'dev01',
         'dev02': 'dev02',
+        'dev03': 'dev03',
         'hotfix01': 'hotfix01',
         'prod': ''
     }
@@ -44,6 +47,8 @@ class ApiConfig(object):
             return 'arn:aws:iam::171608821407:role/Cognito_chikyu_PROD_idpoolAuth_Role'
         elif cls.__mode == 'docker' or cls.__mode == 'local':
             return 'arn:aws:iam::527083274078:role/Cognito_ChikyuDevLocalAuth_Role'
+        elif cls.__mode == 'dev03':
+            return 'arn:aws:iam::527083274078:role/Cognito_Chikyu_Normal_Id_Pool_devAuth_Role'
         else:
             return 'arn:aws:iam::171608821407:role/Cognito_Chikyu_Normal_Id_PoolAuth_Role'
 
