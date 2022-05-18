@@ -34,7 +34,7 @@ def put_file(url, file_path, content_type, as_binary=True):
     file_data = file_helper.read_file(file_path, as_binary)
     if not file_data:
         return False
-    r = requests.put(url, data=file_data)
+    r = requests.put(url, data=file_data, headers=hd)
     if r.status_code == 200:
         return True
     else:
