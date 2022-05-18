@@ -10,7 +10,7 @@ class Entity(Resource):
     __END_STATUSES = [23, 22, 42, 34, 99]
 
     def start_import(self, collection_name, file_path,
-                     field_mappings, options, is_create_only, list_name, is_async=False):
+                     field_mappings, options, is_create_only, list_name, content_type="text/csv", is_async=False):
         if not os.path.exists(file_path):
             raise ApiExecuteException("file does not exist: {}".format(file_path))
 
@@ -19,7 +19,7 @@ class Entity(Resource):
 
         file_upload_url = res['file_upload_url']
 
-        if not http_helper.put_file(file_upload_url, file_path, ''):
+        if not http_helper.put_file(file_upload_url, file_path, content_type):
             return {'import_id': None}
 
         res = self._resource.invoke('/entity/{}/import/start'.format(collection_name),
