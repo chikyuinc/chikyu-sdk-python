@@ -1,6 +1,6 @@
 # chikyu-sdk-python
 ## 概要
-ちきゅうのWeb APIをPythonから利用するためのライブラリです。
+GENIEE SFA/CRM(旧ちきゅう)のWeb APIをPythonから利用するためのライブラリです。
 
 SDKの開発にはPython2.7.11を利用しています。
 
@@ -79,8 +79,8 @@ from chikyu_sdk.config.api_config import ApiConfig
 from chikyu_sdk.resource.token import Token
 
 # ・トークン名称(任意)
-# ・ちきゅうのログイン用メールアドレス
-# ・ちきゅうのログイン用パスワード
+# ・GENIEE SFA/CRM(旧ちきゅう)のログイン用メールアドレス
+# ・GENIEE SFA/CRM(旧ちきゅう)のログイン用パスワード
 # ・トークンの有効期限(デフォルトでは24時間 - 秒で指定)
 token = Token.create('token_name', 'email', 'password', 86400)
 
