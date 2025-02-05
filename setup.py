@@ -13,15 +13,15 @@ setup(
 
     version='0.9.0',
 
-    description='Chikyu SDK',
+    description='GENIEE SFA/CRM SDK',
 
     long_description=long_description,
 
     url='https://github.com/chikyuinc/chikyu-sdk-python',
 
-    author='Chikyu Inc.',
+    author='Geniee Inc.',
 
-    author_email='ishikawa_kousuke@chikyu.net',
+    author_email='',
 
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
