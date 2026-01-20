@@ -17,7 +17,10 @@ class SfaOpenResource(ApiResource):
         SFA APIのレスポンスをハンドリング
         新しいSFA APIはsuccessフィールドを使用
         レスポンス全体（success, payload, error_list等）を返す
+        Lambda Proxy形式のレスポンスにも対応
         """
+        import json as json_module
+
         if resp.status_code != 200:
             try:
                 item = resp.json()
@@ -29,6 +32,27 @@ class SfaOpenResource(ApiResource):
             raise HttpException(msg)
 
         content = resp.json()
+
+        # Lambda Proxy形式のレスポンスを検出して変換
+        # ローカル開発環境（server.py）からのレスポンスがこの形式になる場合がある
+        if 'statusCode' in content and 'body' in content and 'isBase64Encoded' in content:
+            status_code = content.get('statusCode', 200)
+            body_str = content.get('body', '{}')
+            try:
+                content = json_module.loads(body_str)
+            except (json_module.JSONDecodeError, TypeError):
+                content = {'message': body_str}
+
+            # Lambda Proxy形式でエラーステータスの場合
+            if status_code != 200:
+                error_list = content.get('error_list', [])
+                if error_list:
+                    err_msg = error_list[0].get('message', 'APIの実行に失敗しました')
+                else:
+                    err_msg = content.get('message', content.get('detail', 'APIの実行に失敗しました'))
+                msg = u"httpエラーが発生しました -> url={} / status={} / message={}".format(
+                    path, status_code, err_msg)
+                raise HttpException(msg)
 
         # 新しいSFA API形式: successフィールドを使用
         if 'success' in content:
