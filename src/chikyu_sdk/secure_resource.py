@@ -34,10 +34,14 @@ class SecureResource(ApiResource):
         if ApiConfig.mode() == "local" or ApiConfig.mode() == "docker":
             params['identity_id'] = self.__session.identity_id
 
+        headers = {'x-api-key': self.__session.api_key, 'content-type': 'application/json'}
+        if ApiConfig.use_http_status():
+            headers['Error-Response'] = 'http-status'
+
         res = requests.post(
             url=url,
             json=params,
-            headers={'x-api-key': self.__session.api_key, 'content-type': 'application/json'},
+            headers=headers,
             auth=self.__auth
         )
 

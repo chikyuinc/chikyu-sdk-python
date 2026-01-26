@@ -3,6 +3,7 @@
 import requests
 
 from chikyu_sdk.api_resource import ApiResource
+from chikyu_sdk.config.api_config import ApiConfig
 
 
 class PublicResource(ApiResource):
@@ -24,12 +25,14 @@ class PublicResource(ApiResource):
         """
         params = {'data': data}
 
+        headers = {'content-type': 'application/json', 'x-api-key': self.__api_key, 'x-auth-key': self.__auth_key}
+        if ApiConfig.use_http_status():
+            headers['Error-Response'] = 'http-status'
+
         url = self._build_url("public", path)
         resp = requests.post(
             url,
             json=params,
-            headers={'content-type': 'application/json',
-                     'x-api-key': self.__api_key,
-                     'x-auth-key': self.__auth_key})
+            headers=headers)
 
         return self._handle_response(path, resp)

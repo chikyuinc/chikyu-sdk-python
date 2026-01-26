@@ -32,7 +32,15 @@ class ApiResource(object):
 
     @classmethod
     def _handle_response(cls, path, resp):
-        if resp.status_code != 200:
+        use_http_status = ApiConfig.use_http_status()
+        http_status = resp.status_code
+
+        if use_http_status:
+            allowed_status_codes = [200, 400]
+        else:
+            allowed_status_codes = [200]
+
+        if http_status not in allowed_status_codes:
             try:
                 item = resp.json()
                 if 'message' in item:
@@ -44,12 +52,12 @@ class ApiResource(object):
 
             if six.PY2:
                 msg = u"httpエラーが発生しました -> url={} / status={} / message={}".format(
-                    to_str(path), to_str(resp.status_code), to_str(err_msg))
+                    to_str(path), to_str(http_status), to_str(err_msg))
             else:
                 msg = \
-                    u"httpエラーが発生しました -> url={} / status={} / message={}".format(path, resp.status_code, err_msg)
+                    u"httpエラーが発生しました -> url={} / status={} / message={}".format(path, http_status, err_msg)
             cls._logger.error(msg)
-            raise HttpException(msg)
+            raise HttpException(msg, http_status=http_status)
 
         content = resp.json()
         if content['has_error']:
@@ -62,7 +70,7 @@ class ApiResource(object):
             else:
                 msg = "APIの実行に失敗しました"
             cls._logger.error(msg)
-            raise ApiExecuteException(msg)
+            raise ApiExecuteException(msg, http_status=http_status)
 
         if 'data' in content:
             return to_unicode_all(content['data'])

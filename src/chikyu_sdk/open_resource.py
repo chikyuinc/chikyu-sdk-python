@@ -3,6 +3,7 @@
 import requests
 
 from chikyu_sdk.api_resource import ApiResource
+from chikyu_sdk.config.api_config import ApiConfig
 
 
 class OpenResource(ApiResource):
@@ -16,10 +17,14 @@ class OpenResource(ApiResource):
         """
         params = {'data': data}
 
+        headers = {'content-type': 'application/json'}
+        if ApiConfig.use_http_status():
+            headers['Error-Response'] = 'http-status'
+
         url = cls._build_url("open", path)
         resp = requests.post(
             url,
             json=params,
-            headers={'content-type': 'application/json'})
+            headers=headers)
 
         return cls._handle_response(path, resp)

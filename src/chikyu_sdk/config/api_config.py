@@ -3,6 +3,7 @@
 
 class ApiConfig(object):
     __mode = 'prod'
+    __use_http_status = False
 
     __HOSTS = {
         'local': 'localhost:9090',
@@ -73,3 +74,19 @@ class ApiConfig(object):
     def set_mode(cls, mode):
         cls.__mode = mode
 
+    @classmethod
+    def use_http_status(cls):
+        """HTTPステータスコードを使用するかどうかを取得する。
+
+        :rtype: bool
+        :return: HTTPステータスコードを使用する場合はTrue
+        """
+        return cls.__use_http_status
+
+    @classmethod
+    def set_use_http_status(cls, value):
+        """HTTPステータスコードを使用するかどうかを設定する。
+
+        :param value: HTTPステータスコードを使用する場合はTrue
+        """
+        cls.__use_http_status = value
