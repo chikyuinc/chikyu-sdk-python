@@ -31,6 +31,30 @@ invoker = SecureResource(session)
 print(invoker.invoke('/entity/companies/list',  {'items_per_page': 10, 'page_index': 0}))
 ```
 
+## 設定オプション
+### HTTPステータスコードの使用
+デフォルトでは、APIエラー時もHTTPステータスコードは200が返されます。
+エラー時に適切なHTTPステータスコード（400等）を受け取りたい場合は、以下の設定を有効にしてください。
+
+```python
+from chikyu_sdk.config.api_config import ApiConfig
+
+# HTTPステータスコードの使用を有効化
+ApiConfig.set_use_http_status(True)
+```
+
+この設定を有効にすると、`has_error`がtrueのレスポンスでHTTP 400が返されます。例外の`http_status`プロパティでステータスコードを取得できます。
+
+```python
+from chikyu_sdk.error.common_errors import ApiExecuteException
+
+try:
+    result = invoker.invoke('/entity/companies/create', {})
+except ApiExecuteException as e:
+    print(e.http_status)  # 400
+    print(str(e))         # エラーメッセージ
+```
+
 ## 詳細
 ### class1(APIキーのみで呼び出し可能)
 #### APIキーを生成する

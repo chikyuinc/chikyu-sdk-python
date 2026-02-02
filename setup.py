@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='chikyu-sdk',
 
-    version='0.9.0',
+    version='0.10.0',
 
     description='GENIEE SFA/CRM SDK',
 
